@@ -1,7 +1,12 @@
 package com.example.ezemkofi.data.models
 
 data class CartItem(
-    val coffeeId: String,
+    val id: Int,
+    val name: String,
+    val description: String?,
+    val imagePath: String,
     val size: String,
-    val quantity: Int
+    val price: Double,
+    var quantity: Int,
+    var category: String
 )

@@ -2,6 +2,9 @@ package com.example.ezemkofi.data.remote
 
 import android.content.Context
 import com.example.ezemkofi.data.models.CartItem
+import com.example.ezemkofi.data.models.Coffee
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
 
 class SharedPrefsManager(private val context: Context) {
@@ -23,63 +26,54 @@ class SharedPrefsManager(private val context: Context) {
         return sharedPreferences.getString("NAME", null)
     }
 
-    fun addToCart(context: Context, coffeeId: String, size: String, quantity: Int) {
-        val sharedPref = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
-        val cartJson = sharedPref.getString("cart_data", "{}")
-        val jsonObj = JSONObject(cartJson ?: "{}")
+    fun addToCart(cartCoffee: CartItem) {
+        val gson = Gson()
+        val json = sharedPreferences.getString("CART", "[]")
+        val type = object : TypeToken<MutableList<CartItem>>() {}.type
+        val cartList : MutableList<CartItem> = gson.fromJson(json, type)
 
-        val key = "${coffeeId}_${size}"
-        val existingQty = jsonObj.optInt(key, 0)
+        val existing = cartList.find { it.id == cartCoffee.id && it.size == cartCoffee.size }
 
-        jsonObj.put(key, existingQty + quantity)
-
-        sharedPref.edit().putString("cart_data", jsonObj.toString()).apply()
-    }
-
-    fun decreaseFromCart(context: Context, coffeeId: String, size: String, quantity: Int) {
-        val sharedPref = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
-        val cartJson = sharedPref.getString("cart_data", "{}")
-        val jsonObj = JSONObject(cartJson ?: "{}")
-
-        val key = "${coffeeId}_${size}"
-        val existingQty = jsonObj.optInt(key, 0)
-
-        jsonObj.put(key, existingQty - quantity)
-
-        sharedPref.edit().putString("cart_data", jsonObj.toString()).apply()
-    }
-
-    fun removeFromCart(context: Context, coffeeId: String, size: String, quantity: Int) {
-        val sharedPref = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
-        val cartJson = sharedPref.getString("cart_data", "{}")
-        val jsonObj = JSONObject(cartJson ?: "{}")
-
-        val key = "${coffeeId}_${size}"
-        val existingQty = jsonObj.optInt(key, 0)
-
-        jsonObj.put(key, existingQty + quantity)
-
-        sharedPref.edit().putString("cart_data", jsonObj.toString()).apply()
-    }
-
-    fun getCartItems(context: Context): List<CartItem> {
-        val sharedPref = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
-        val cartJson = sharedPref.getString("cart_data", "{}")
-        val jsonObj = JSONObject(cartJson ?: "{}")
-        val items = mutableListOf<CartItem>()
-
-        jsonObj.keys().forEach { key ->
-            val quantity = jsonObj.getInt(key)
-            if(quantity > 0) {
-                val parts = key.split("_")
-                if (parts.size == 2) {
-                    val coffeeId = parts[0]
-                    val size = parts[1]
-                    items.add(CartItem(coffeeId, size, quantity))
-                }
-            }
+        if(existing != null) {
+            existing.quantity += cartCoffee.quantity
+        } else {
+            cartList.add(cartCoffee)
         }
-        return items
+
+        sharedPreferences.edit().putString("CART", gson.toJson(cartList)).apply()
+
+    }
+
+    fun getCartItems() : List<CartItem> {
+        val gson = Gson()
+        val json = sharedPreferences.getString("CART", "[]")
+        val type = object : TypeToken<List<CartItem>>(){}.type
+        return gson.fromJson(json, type)
+    }
+
+    fun updateQuantity(id: Int, size: String, newQuantity: Int) {
+        val gson = Gson()
+        val json = sharedPreferences.getString("CART", "[]")
+        val type = object : TypeToken<MutableList<CartItem>>(){}.type
+        val coffeeCart = gson.fromJson<MutableList<CartItem>>(json, type)
+
+        val item = coffeeCart.find { it.id == id && it.size == size }
+
+        if(item != null) {
+            item.quantity = newQuantity
+            sharedPreferences.edit().putString("CART", gson.toJson(coffeeCart)).apply()
+        }
+    }
+
+    fun removeFromCart(id: Int, size: String) {
+        val gson = Gson()
+        val json = sharedPreferences.getString("CART", "[]")
+        val type = object : TypeToken<MutableList<CartItem>>(){}.type
+        val coffeeCart = gson.fromJson<MutableList<CartItem>>(json, type)
+
+        val updatedList = coffeeCart.filterNot { it.id == id && it.size == size }
+
+        sharedPreferences.edit().putString("CART", gson.toJson(updatedList)).apply()
     }
 
 

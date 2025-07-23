@@ -11,10 +11,12 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.ezemkofi.ui.screens.auth.LoginScreen
 import com.example.ezemkofi.ui.screens.auth.RegisterScreen
+import com.example.ezemkofi.ui.screens.main.CartScreen
 import com.example.ezemkofi.ui.screens.main.DetailCoffeeScreen
 import com.example.ezemkofi.ui.screens.main.HomeScreen
 import com.example.ezemkofi.ui.viewmodel.AuthViewModel
 import com.example.ezemkofi.ui.viewmodel.CoffeeViewModel
+import kotlin.reflect.typeOf
 
 
 fun NavGraphBuilder.mainNavigation(navController: NavHostController, coffeeViewModel: CoffeeViewModel) {
@@ -31,12 +33,20 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController, coffeeViewM
         composable(
             route = Screen.Coffee.route,
             arguments = listOf(
-                navArgument("id") {type = NavType.IntType}
+                navArgument("id") {type = NavType.IntType},
+                navArgument("category") {type = NavType.StringType}
             )
         ) { backstack ->
             val id = backstack.arguments?.getInt("id") ?: 0
+            val category = backstack.arguments?.getString("category") ?: ""
 
-            DetailCoffeeScreen(navController, coffeeViewModel, id)
+            DetailCoffeeScreen(navController, coffeeViewModel, id, category)
+        }
+
+        composable(
+            route = Screen.Cart.route
+        ) {
+            CartScreen(navController, coffeeViewModel)
         }
 
     }

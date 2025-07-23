@@ -45,7 +45,7 @@ fun TopPickCoffeeCard(coffee: Coffee, navController: NavController) {
             .fillMaxWidth()
             .padding(12.dp)
             .clickable {
-                navController.navigate(Screen.Coffee.passId(coffee.id)) {
+                navController.navigate(Screen.Coffee.passId(coffee.id, coffee.category)) {
                     popUpTo(Screen.Home.route) {inclusive = false}
                 }
             },

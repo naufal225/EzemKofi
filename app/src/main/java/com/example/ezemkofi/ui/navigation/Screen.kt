@@ -9,11 +9,12 @@ sealed class Screen(val route: String) {
     data object Main : Screen("Main")
 
     data object Home : Screen("Home" )
-    data object Coffee : Screen("coffee/{id}") {
-        fun passId(id: Int) : String = "coffee/${id}"
+    data object Coffee : Screen("coffee/{id}/{category}") {
+        fun passId(id: Int, category: String) : String = "coffee/${id}/${category}"
     }
 
     data object Cart : Screen("Cart")
+
 
 
 

@@ -45,7 +45,7 @@ fun CoffeeCard(coffee: Coffee, navController: NavController) {
             .height(240.dp)
             .background(EzemGreen, shape = RoundedCornerShape(24.dp))
             .clickable {
-                navController.navigate(Screen.Coffee.passId(coffee.id)) {
+                navController.navigate(Screen.Coffee.passId(coffee.id, coffee.category)) {
                     popUpTo(Screen.Home.route) {inclusive = false}
                 }
             }

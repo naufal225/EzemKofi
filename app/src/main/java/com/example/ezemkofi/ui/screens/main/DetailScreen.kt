@@ -56,6 +56,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.ezemkofi.data.models.CartItem
 import com.example.ezemkofi.data.models.Coffee
 import com.example.ezemkofi.data.remote.NetworkResponse
 import com.example.ezemkofi.data.remote.RetrofitInstance
@@ -69,7 +70,7 @@ import com.example.ezemkofi.ui.viewmodel.CoffeeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailCoffeeScreen(navController: NavController, coffeeViewModel: CoffeeViewModel, id : Int) {
+fun DetailCoffeeScreen(navController: NavController, coffeeViewModel: CoffeeViewModel, id : Int, category: String) {
     val coffee by coffeeViewModel.coffee.observeAsState()
 
     LaunchedEffect(Unit) {
@@ -310,8 +311,18 @@ fun DetailCoffeeScreen(navController: NavController, coffeeViewModel: CoffeeView
                                 colors = ButtonDefaults.buttonColors(EzemGreen),
                                 modifier = Modifier.fillMaxWidth().padding(12.dp),
                                 onClick = {
-                                    sharedPreferences.addToCart(context, data.id.toString(),
-                                        selectedSize.name[0].toString(), quantity)
+                                    sharedPreferences.addToCart(
+                                        CartItem(
+                                            id = data.id,
+                                            name = data.name,
+                                            description = data.description ?: "Threre is no description" ,
+                                            price = data.price,
+                                            imagePath = data.imagePath,
+                                            size = selectedSize.name[0].toString(),
+                                            quantity = quantity,
+                                            category = category
+                                        )
+                                    )
                                 },
                                 enabled = quantity > 0
                             ) {
