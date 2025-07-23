@@ -14,7 +14,7 @@ sealed class Screen(val route: String) {
     }
 
     data object Cart : Screen("Cart")
-
+    data object Search : Screen("Search")
 
 
 

@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -79,7 +80,7 @@ fun HomeScreen(navController: NavController, coffeeViewModel: CoffeeViewModel) {
         coffeeViewModel.getAllTopPick()
     }
 
-    var selectedCategory by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf("Americano") }
 
     val filteredCoffee = remember(coffees, selectedCategory, searchQuery) {
         when(coffees) {
@@ -90,7 +91,7 @@ fun HomeScreen(navController: NavController, coffeeViewModel: CoffeeViewModel) {
                     it.category.contains(selectedCategory, ignoreCase = true)
                 }
             }
-            else -> emptyList<Coffee>()
+            else -> emptyList()
         }
     }
 
@@ -159,13 +160,23 @@ fun HomeScreen(navController: NavController, coffeeViewModel: CoffeeViewModel) {
                         Text("Find your prefect coffee", color = EzemGray)
                     },
                     trailingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search"
-                        )
+                        IconButton(
+                            onClick = {
+                                navController.navigate(Screen.Search.route) {
+                                    popUpTo(Screen.Home.route) {inclusive = false}
+                                    launchSingleTop = true
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search"
+                            )
+                        }
+
                     },
                     modifier = Modifier.height(50.dp).fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp)
+                    shape = CircleShape
                 )
 
                 Spacer(Modifier.height(6.dp))

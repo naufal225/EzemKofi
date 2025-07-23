@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.ezemkofi.data.models.Coffee
@@ -62,13 +63,13 @@ fun CoffeeCard(coffee: Coffee, navController: NavController) {
                     .offset(y = (-90).dp)
                     .size(160.dp)
                     .clip(CircleShape)
-                    .background(Color.White)
+                    .zIndex(2f)
             ) {
                 AsyncImage(
                     model = RetrofitInstance.IMAGE_URL + coffee.imagePath,
                     contentDescription = coffee.name,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize().zIndex(2f),
                 )
             }
 

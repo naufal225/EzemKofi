@@ -323,6 +323,8 @@ fun DetailCoffeeScreen(navController: NavController, coffeeViewModel: CoffeeView
                                             category = category
                                         )
                                     )
+
+                                    navController.popBackStack()
                                 },
                                 enabled = quantity > 0
                             ) {

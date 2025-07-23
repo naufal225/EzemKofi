@@ -46,7 +46,7 @@ import com.example.ezemkofi.ui.theme.Poppins
 
 
 @Composable
-fun CartCoffeeCard(cartItem: CartItem, onAddQuantity : () -> Unit, onDecreaseQuantity : () -> Unit) {
+fun CartCoffeeCard(cartItem: CartItem, onAddQuantity : () -> Unit, onDecreaseQuantity : () -> Unit, totalPrice : Double) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -141,7 +141,7 @@ fun CartCoffeeCard(cartItem: CartItem, onAddQuantity : () -> Unit, onDecreaseQua
                 }
 
                 Text(
-                    text = "$%.2f".format(cartItem.price),
+                    text = "$%.2f".format(totalPrice),
                     fontSize = 18.sp,
                     fontWeight = Bold,
                     fontFamily = Poppins

@@ -14,12 +14,14 @@ import com.example.ezemkofi.ui.screens.auth.RegisterScreen
 import com.example.ezemkofi.ui.screens.main.CartScreen
 import com.example.ezemkofi.ui.screens.main.DetailCoffeeScreen
 import com.example.ezemkofi.ui.screens.main.HomeScreen
+import com.example.ezemkofi.ui.screens.main.SearchScreen
 import com.example.ezemkofi.ui.viewmodel.AuthViewModel
 import com.example.ezemkofi.ui.viewmodel.CoffeeViewModel
+import com.example.ezemkofi.ui.viewmodel.TransactionViewModel
 import kotlin.reflect.typeOf
 
 
-fun NavGraphBuilder.mainNavigation(navController: NavHostController, coffeeViewModel: CoffeeViewModel) {
+fun NavGraphBuilder.mainNavigation(navController: NavHostController, coffeeViewModel: CoffeeViewModel, transactionViewModel: TransactionViewModel) {
     navigation(
         startDestination = Screen.Home.route,
         route = Screen.Main.route
@@ -46,7 +48,13 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController, coffeeViewM
         composable(
             route = Screen.Cart.route
         ) {
-            CartScreen(navController, coffeeViewModel)
+            CartScreen(navController, transactionViewModel)
+        }
+
+        composable(
+            route = Screen.Search.route
+        ) {
+            SearchScreen(navController, coffeeViewModel)
         }
 
     }

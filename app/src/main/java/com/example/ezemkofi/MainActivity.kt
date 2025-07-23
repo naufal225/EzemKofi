@@ -18,18 +18,20 @@ import com.example.ezemkofi.ui.screens.auth.LoginScreen
 import com.example.ezemkofi.ui.theme.EzemKofiTheme
 import com.example.ezemkofi.ui.viewmodel.AuthViewModel
 import com.example.ezemkofi.ui.viewmodel.CoffeeViewModel
+import com.example.ezemkofi.ui.viewmodel.TransactionViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val authViewModel : AuthViewModel by viewModels()
         val coffeeViewModel : CoffeeViewModel by viewModels()
+        val transactionViewModel : TransactionViewModel by viewModels()
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
             EzemKofiTheme {
-                RootNavGraph(navController, authViewModel, coffeeViewModel)
+                RootNavGraph(navController, authViewModel, coffeeViewModel, transactionViewModel)
             }
         }
     }

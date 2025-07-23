@@ -73,6 +73,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             is NetworkResponse.SUCCESS -> {
                 authViewModel.authResult.postValue(null)
                 sharedPrefsManager.saveName(username)
+                sharedPrefsManager.saveToken((authResult as NetworkResponse.SUCCESS<String>).data)
+
                 Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
                 navController.navigate(Screen.Main.route) {
                     popUpTo(Screen.Login.route) {inclusive = true}

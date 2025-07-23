@@ -6,14 +6,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.ezemkofi.ui.viewmodel.AuthViewModel
 import com.example.ezemkofi.ui.viewmodel.CoffeeViewModel
+import com.example.ezemkofi.ui.viewmodel.TransactionViewModel
 
 @Composable
-fun RootNavGraph(navController: NavHostController, authViewModel: AuthViewModel, coffeeViewModel: CoffeeViewModel) {
+fun RootNavGraph(navController: NavHostController, authViewModel: AuthViewModel, coffeeViewModel: CoffeeViewModel, transactionViewModel: TransactionViewModel) {
     NavHost(
         navController = navController,
         startDestination = Screen.Auth.route
     ) {
         authNavGraph(navController, authViewModel)
-        mainNavigation(navController, coffeeViewModel)
+        mainNavigation(navController, coffeeViewModel, transactionViewModel)
     }
 }

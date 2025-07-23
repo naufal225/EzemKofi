@@ -76,5 +76,9 @@ class SharedPrefsManager(private val context: Context) {
         sharedPreferences.edit().putString("CART", gson.toJson(updatedList)).apply()
     }
 
+    fun clearCart() {
+        sharedPreferences.edit().putString("CART", null).apply()
+    }
+
 
 }
