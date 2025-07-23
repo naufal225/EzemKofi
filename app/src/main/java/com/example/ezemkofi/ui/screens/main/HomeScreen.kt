@@ -107,177 +107,206 @@ fun HomeScreen(navController: NavController, coffeeViewModel: CoffeeViewModel) {
                 .padding(padding)
         ) {
 
-            Column(
+            LazyColumn (
                 modifier = Modifier.fillMaxWidth().padding(12.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(12.dp),
-                ) {
-                    Column(
-                        modifier = Modifier.weight(1f).padding(6.dp),
-                        verticalArrangement = Arrangement.Center
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(12.dp),
                     ) {
-                        Text(
-                            text = "Good Morning",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp,
-                            fontFamily = Poppins
-                        )
-
-                        Spacer(Modifier.height(12.dp))
-
-                        Text(
-                            text = sharedPrefsManager.getName() ?: "Amir",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp,
-                            fontFamily = Poppins
-                        )
-                    }
-
-                    IconButton(
-                        onClick = {
-                            navController.navigate(Screen.Cart.route) {
-                                popUpTo(Screen.Home.route) {
-                                    inclusive = false
-                                }
-                            }
-                        },
-                        colors = IconButtonDefaults.iconButtonColors(EzemWhite)
-                    ) {
-                        Box(
-                            modifier = Modifier.size(32.dp),
-                            contentAlignment = Alignment.Center
+                        Column(
+                            modifier = Modifier.weight(1f).padding(6.dp),
+                            verticalArrangement = Arrangement.Center
                         ) {
-                            Icon(
-                                painter = painterResource(R.drawable.shopping_bag),
-                                contentDescription = "shoppingBag",
-                                Modifier.size(28.dp),
+                            Text(
+                                text = "Good Morning",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 24.sp,
+                                fontFamily = Poppins
+                            )
 
-                                )
-                            if(sharedPrefsManager.getCartItems().isNotEmpty()) {
-                                Badge(
-                                    containerColor = Color.Red,
-                                    modifier = Modifier.clip(CircleShape).align(Alignment.TopEnd)
-                                ) {
-                                    Text(
-                                        text = sharedPrefsManager.getCartItems().count().toString(),
-                                        color = Color.White,
-                                        fontSize = 12.sp,
-                                        fontFamily = Poppins
-                                    )
-                                }
-                            }
+                            Spacer(Modifier.height(12.dp))
+
+                            Text(
+                                text = sharedPrefsManager.getName() ?: "Amir",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                fontFamily = Poppins
+                            )
                         }
-                    }
-                }
 
-                Spacer(Modifier.height(12.dp))
-
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = {searchQuery = it},
-                    placeholder = {
-                        Text("Find your prefect coffee", color = EzemGray)
-                    },
-                    trailingIcon = {
                         IconButton(
                             onClick = {
-                                navController.navigate(Screen.Search.route) {
-                                    popUpTo(Screen.Home.route) {inclusive = false}
-                                    launchSingleTop = true
+                                navController.navigate(Screen.Cart.route) {
+                                    popUpTo(Screen.Home.route) {
+                                        inclusive = false
+                                    }
                                 }
-                            }
+                            },
+                            colors = IconButtonDefaults.iconButtonColors(EzemWhite)
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "Search"
-                            )
-                        }
-
-                    },
-                    modifier = Modifier.height(50.dp).fillMaxWidth(),
-                    shape = CircleShape
-                )
-
-                Spacer(Modifier.height(6.dp))
-
-                Text(
-                    text = "Categories",
-                    fontFamily = Poppins, fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(12.dp)
-                )
-
-                Spacer(Modifier.height(6.dp))
-
-                when(categories) {
-                    is NetworkResponse.SUCCESS -> {
-                        val data = (categories as NetworkResponse.SUCCESS).data
-                        LazyRow(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            items(data) {
-                                FilterChip(
-                                    selected = selectedCategory == it.name,
-                                    onClick = {
-                                        if(selectedCategory == it.name) {
-                                            selectedCategory = ""
-                                        } else {
-                                            selectedCategory = it.name
-                                        }
-                                    },
-                                    label = {
-                                        Text(
-                                            it.name,
-                                            color = if(selectedCategory == it.name) Color.White else EzemGreen
-                                        )
-                                    },
-                                    modifier = Modifier.padding(6.dp),
-                                    shape = RoundedCornerShape(8.dp),
-                                    colors = FilterChipDefaults.filterChipColors(
-                                        selectedContainerColor = EzemGreen
-                                    )
-                                )
-                            }
-                        }
-                    }
-                    else  -> {
-                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                            Text(
-                                text = "There is no category found",
-                                color = EzemGray,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                fontFamily = Poppins,
-                            )
-                        }
-                    }
-                }
-
-                when(coffees) {
-                    is NetworkResponse.SUCCESS -> {
-                        if (filteredCoffee.isNotEmpty()) {
-                            LazyRow(
-                                modifier = Modifier.fillMaxWidth().padding(12.dp),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            Box(
+                                modifier = Modifier.size(32.dp),
+                                contentAlignment = Alignment.Center
                             ) {
-                                items(filteredCoffee) {
-                                    Box(
-                                        modifier = Modifier.padding(top = 90.dp).background(
-                                            Brush.horizontalGradient(
-                                                colors = listOf(Color.White, Color.Transparent)
-                                            )
-                                        )
+                                Icon(
+                                    painter = painterResource(R.drawable.shopping_bag),
+                                    contentDescription = "shoppingBag",
+                                    Modifier.size(28.dp),
+
+                                    )
+                                if(sharedPrefsManager.getCartItems().isNotEmpty()) {
+                                    Badge(
+                                        containerColor = Color.Red,
+                                        modifier = Modifier.clip(CircleShape).align(Alignment.TopEnd)
                                     ) {
-                                        CoffeeCard(it,navController)
+                                        Text(
+                                            text = sharedPrefsManager.getCartItems().count().toString(),
+                                            color = Color.White,
+                                            fontSize = 12.sp,
+                                            fontFamily = Poppins
+                                        )
                                     }
                                 }
                             }
-                        } else {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
+                        }
+                    }
+                }
+
+                item {
+                    Spacer(Modifier.height(12.dp))
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = {searchQuery = it},
+                        placeholder = {
+                            Text("Find your prefect coffee", color = EzemGray)
+                        },
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {
+                                    navController.navigate(Screen.Search.route) {
+                                        popUpTo(Screen.Home.route) {inclusive = false}
+                                        launchSingleTop = true
+                                    }
+                                }
                             ) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = "Search"
+                                )
+                            }
+
+                        },
+                        modifier = Modifier.height(50.dp).fillMaxWidth(),
+                        shape = CircleShape
+                    )
+                }
+
+                item {
+                    Spacer(Modifier.height(6.dp))
+                }
+
+                item {
+                    Text(
+                        text = "Categories",
+                        fontFamily = Poppins, fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+
+                item {
+                    Spacer(Modifier.height(6.dp))
+                }
+
+                item {
+                    when(categories) {
+                        is NetworkResponse.SUCCESS -> {
+                            val data = (categories as NetworkResponse.SUCCESS).data
+                            LazyRow(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                items(data) {
+                                    FilterChip(
+                                        selected = selectedCategory == it.name,
+                                        onClick = {
+                                            if(selectedCategory == it.name) {
+                                                selectedCategory = ""
+                                            } else {
+                                                selectedCategory = it.name
+                                            }
+                                        },
+                                        label = {
+                                            Text(
+                                                it.name,
+                                                color = if(selectedCategory == it.name) Color.White else EzemGreen
+                                            )
+                                        },
+                                        modifier = Modifier.padding(6.dp),
+                                        shape = RoundedCornerShape(8.dp),
+                                        colors = FilterChipDefaults.filterChipColors(
+                                            selectedContainerColor = EzemGreen
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                        else  -> {
+                            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                                Text(
+                                    text = "There is no category found",
+                                    color = EzemGray,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    fontFamily = Poppins,
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    when(coffees) {
+                        is NetworkResponse.SUCCESS -> {
+                            if (filteredCoffee.isNotEmpty()) {
+                                LazyRow(
+                                    modifier = Modifier.fillMaxWidth().padding(12.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    items(filteredCoffee) {
+                                        Box(
+                                            modifier = Modifier.padding(top = 90.dp).background(
+                                                Brush.horizontalGradient(
+                                                    colors = listOf(Color.White, Color.Transparent)
+                                                )
+                                            )
+                                        ) {
+                                            CoffeeCard(it,navController)
+                                        }
+                                    }
+                                }
+                            } else {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = "There is no coffee found",
+                                        color = EzemGray,
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Normal,
+                                        fontFamily = Poppins,
+                                    )
+                                }
+                            }
+
+
+                        }
+                        else -> {
+                            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
                                 Text(
                                     text = "There is no coffee found",
                                     color = EzemGray,
@@ -287,53 +316,46 @@ fun HomeScreen(navController: NavController, coffeeViewModel: CoffeeViewModel) {
                                 )
                             }
                         }
-
-
-                    }
-                    else -> {
-                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                            Text(
-                                text = "There is no coffee found",
-                                color = EzemGray,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                fontFamily = Poppins,
-                            )
-                        }
                     }
                 }
 
-                Spacer(Modifier.height(8.dp))
+                item {
+                    Spacer(Modifier.height(8.dp))
+                }
 
-                Text(
-                    text = "Top Picks",
-                    fontFamily = Poppins, fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(12.dp)
-                )
+                item {
+                    Text(
+                        text = "Top Picks",
+                        fontFamily = Poppins, fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
 
-                Spacer(Modifier.height(6.dp))
+                item {
+                    Spacer(Modifier.height(6.dp))
+                }
 
                 when(topPicks) {
                     is NetworkResponse.SUCCESS -> {
                         val data = (topPicks as NetworkResponse.SUCCESS).data
-                        LazyColumn(
-                            modifier = Modifier.fillMaxWidth().weight(1f).padding(12.dp)
-                        ) {
-                            items(data) {
-                                TopPickCoffeeCard(it, navController)
-                            }
+
+                        items(data) {
+                            TopPickCoffeeCard(it, navController)
                         }
                     }
                     else -> {
-                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                            Text(
-                                text = "There is no top pick coffee found",
-                                color = EzemGray,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                fontFamily = Poppins,
-                            )
+                        item {
+                            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                                Text(
+                                    text = "There is no top pick coffee found",
+                                    color = EzemGray,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    fontFamily = Poppins,
+                                )
+                            }
                         }
+
                     }
                 }
 
