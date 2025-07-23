@@ -164,7 +164,7 @@ fun DetailCoffeeScreen(navController: NavController, coffeeViewModel: CoffeeView
                             model = RetrofitInstance.IMAGE_URL + data.imagePath,
                             contentDescription = data.name,
                             modifier = Modifier
-                                .size(300.dp)
+                                .size(280.dp)
                                 .clip(CircleShape)
                                 .graphicsLayer(
                                     scaleX = animatedScale,
